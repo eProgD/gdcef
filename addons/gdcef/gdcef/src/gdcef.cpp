@@ -29,6 +29,8 @@
 #include "helper_files.hpp"
 #include "helper_config.hpp"
 
+using namespace godot;
+
 //------------------------------------------------------------------------------
 // List of file libraries and artifacts mandatory to make CEF working
 #if defined(_WIN32)
@@ -80,18 +82,17 @@ static bool sanity_checks(fs::path const& folder)
 // In a GDNative module, "_bind_methods" is replaced by the "_register_methods"
 // method CefRefPtr<CefBrowser> m_browser;this is used to expose various methods
 // of this class to Godot
-void GDCef::_register_methods()
+void GDCef::_bind_methods()
 {
-    std::cout << "[GDCEF][GDCef::_register_methods]" << std::endl;
+    std::cout << "[GDCEF][GDCef::_bind_methods]" << std::endl;
 
-    godot::register_method("initialize", &GDCef::initialize);
-    godot::register_method("_process", &GDCef::_process);
-    godot::register_method("get_full_version", &GDCef::version);
-    godot::register_method("get_version_part", &GDCef::versionPart);
-    godot::register_method("create_browser", &GDCef::createBrowser);
-    godot::register_method("shutdown", &GDCef::shutdown);
-    godot::register_method("is_alive", &GDCef::isAlive);
-    godot::register_method("get_error", &GDCef::getError);
+    ClassDB::bind_method(D_METHOD("initialize"), &GDCef::initialize);
+    ClassDB::bind_method(D_METHOD("get_full_version"), &GDCef::version);
+    ClassDB::bind_method(D_METHOD("get_version_part"), &GDCef::versionPart);
+    ClassDB::bind_method(D_METHOD("start_browser"), &GDCef::startBrowser);
+    ClassDB::bind_method(D_METHOD("shutdown"), &GDCef::shutdown);
+    ClassDB::bind_method(D_METHOD("is_alive"), &GDCef::isAlive);
+    ClassDB::bind_method(D_METHOD("get_error"), &GDCef::getError);
 }
 
 //------------------------------------------------------------------------------
@@ -186,7 +187,9 @@ int GDCef::versionPart(int entry)
 //------------------------------------------------------------------------------
 godot::String GDCef::version()
 {
-    return CEF_VERSION;
+    std::cout << "void GDCef::version(float /*delta*/)"
+              << std::endl;
+    return CEF_VERSION ;
 }
 
 //------------------------------------------------------------------------------
@@ -198,7 +201,7 @@ godot::String GDCef::getError()
 }
 
 //------------------------------------------------------------------------------
-void GDCef::_process(float /*delta*/)
+void GDCef::_process(double /*delta*/)
 {
     if (m_impl != nullptr)
     {
@@ -433,7 +436,7 @@ void GDCef::shutdown()
 }
 
 //------------------------------------------------------------------------------
-GDBrowserView* GDCef::createBrowser(godot::String const url, godot::String const
+GDBrowserView* GDCef::startBrowser(GDBrowserView* browser, godot::String const url, godot::String const
                                     name, int w, int h, godot::Dictionary config)
 {
     GDCEF_DEBUG_VAL("name: " << name.utf8().get_data() <<
@@ -444,9 +447,6 @@ GDBrowserView* GDCef::createBrowser(godot::String const url, godot::String const
         GDCEF_ERROR("CEF was not initialized");
         return nullptr;
     }
-
-    // Godot node creation (note Godot cannot pass arguments to _new())
-    GDBrowserView* browser = GDBrowserView::_new();
     if (browser == nullptr)
     {
         GDCEF_ERROR("new BrowserView() failed");

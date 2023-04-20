@@ -26,7 +26,37 @@
 #include "gdcef.hpp"
 #include "gdbrowser.hpp"
 
-extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options * o)
+using namespace godot;
+
+void initialize_example_module(ModuleInitializationLevel p_level) {
+    if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
+        return;
+    }
+
+    ClassDB::register_class<GDCef>();
+    ClassDB::register_class<GDBrowserView>();
+}
+
+void uninitialize_example_module(ModuleInitializationLevel p_level) {
+    if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
+        return;
+    }
+}
+
+extern "C" {
+// Initialization.
+GDExtensionBool GDE_EXPORT example_library_init(const GDExtensionInterface *p_interface, const GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
+    godot::GDExtensionBinding::InitObject init_obj(p_interface, p_library, r_initialization);
+
+    init_obj.register_initializer(initialize_example_module);
+    init_obj.register_terminator(uninitialize_example_module);
+    init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
+
+    return init_obj.init();
+}
+}
+
+/*extern "C" void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options * o)
 {
     godot::Godot::gdnative_init(o);
 }
@@ -41,4 +71,4 @@ extern "C" void GDN_EXPORT godot_nativescript_init(void* handle)
     godot::Godot::nativescript_init(handle);
     godot::register_class<GDCef>();
     godot::register_class<GDBrowserView>();
-}
+}*/

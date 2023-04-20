@@ -55,11 +55,11 @@
 #  endif
 
 // Godot
-#  include "Godot.hpp"
-#  include "ProjectSettings.hpp"
-#  include "OS.hpp"
-#  include "Node.hpp"
-#  include "ImageTexture.hpp"
+#  include "godot_cpp/godot.hpp"
+#  include "godot_cpp/classes/project_settings.hpp"
+#  include "godot_cpp/classes/os.hpp"
+#  include "godot_cpp/classes/node.hpp"
+#  include "godot_cpp/classes/image_texture.hpp"
 
 // Chromium Embedded Framework
 #  include "cef_client.h"
@@ -117,13 +117,13 @@ public: // Godot interfaces.
     //! \brief Method automatically called by Godot engine to register the
     //! desired C++ methods that will be callable from gdscript.
     // -------------------------------------------------------------------------
-    static void _register_methods();
+    static void _bind_methods();
 
     // -------------------------------------------------------------------------
     //! \brief Process automatically called by Godot engine. Call the CEF pomp
     //! loop message.
     // -------------------------------------------------------------------------
-    void _process(float delta);
+    void _process(double delta) override;
 
 private: // Godot interfaces.
 
@@ -131,7 +131,7 @@ private: // Godot interfaces.
     //! \brief Godot reference counting. Beware can conflict with CEF reference
     //! counting: this is why wehave to implement the sub class Impl.
     // -------------------------------------------------------------------------
-    GODOT_CLASS(GDCef, godot::Node);
+    GDCLASS(GDCef, godot::Node);
 
 private: // CEF interfaces.
 
@@ -255,12 +255,12 @@ public:
     //!   - {"javascript_close_windows", STATE_DISABLED}
     //!   - {"javascript_access_clipboard", STATE_DISABLED}
     //!   - {"javascript_dom_paste", STATE_DISABLED}
-    //!   - {"image_loading", STATE_ENABLED}
+    //!   - {GDBrowserView"image_loading", STATE_ENABLED}
     //!   - {"databases", STATE_ENABLED}
     //!   - {"webgl", STATE_ENABLED}
     //!   Wherer STATE_DISABLED / STATE_ENABLED == false / true
     // -------------------------------------------------------------------------
-    GDBrowserView* createBrowser(godot::String const url, godot::String const name,
+    GDBrowserView* startBrowser(GDBrowserView* browser, godot::String const url, godot::String const name,
                                  int w, int h, godot::Dictionary browser_settings);
 
 private:

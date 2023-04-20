@@ -48,11 +48,11 @@
 #  endif
 
 // Godot
-#  include "Godot.hpp"
-#  include "GDScript.hpp"
-#  include "Node.hpp"
-#  include "ImageTexture.hpp"
-#  include "GlobalConstants.hpp"
+#  include "godot_cpp/godot.hpp"
+#  include "godot_cpp/classes/gd_script.hpp"
+#  include "godot_cpp/classes/node.hpp"
+#  include "godot_cpp/classes/image_texture.hpp"
+#  include "godot_cpp/classes/global_constants.hpp"
 
 // Chromium Embedded Framework
 #  include "cef_render_handler.h"
@@ -82,12 +82,12 @@ public: // Godot interfaces
     //! \brief Static function that Godot will call to find out which methods
     //! can be called on our NativeScript and which properties it exposes.
     // -------------------------------------------------------------------------
-    static void _register_methods();
+    static void _bind_methods();
 
     // -------------------------------------------------------------------------
     //! \brief Godot stuff
     // -------------------------------------------------------------------------
-    GODOT_CLASS(GDBrowserView, godot::Node);
+    GDCLASS(GDBrowserView, godot::Node);
 
 private: // CEF interfaces
 
@@ -242,7 +242,7 @@ public:
     void loadURL(godot::String url);
 
     // -------------------------------------------------------------------------
-    //! \brief Exported method to Godot script. Return true if a document has
+    //! \brief Exported method to GoImageTexturedot script. Return true if a document has
     //! been loaded in the browser.
     // -------------------------------------------------------------------------
     bool loaded() const;
@@ -456,7 +456,7 @@ private:
     //! \brief Godot's temporary image (CEF => Godot)
     godot::Ref<godot::ImageTexture> m_texture;
     godot::Ref<godot::Image> m_image;
-    godot::PoolByteArray m_data;
+    godot::PackedByteArray m_data;
 
     //! \brief Mouse cursor position on the main window
     int m_mouse_x = 0;

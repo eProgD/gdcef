@@ -42,8 +42,8 @@ from packaging import version
 CEF_VERSION = "110.0.27+g1296c82+chromium-110.0.5481.100"
 CEF_TARGET = "Release"             # or "Debug"
 MODULE_TARGET = "release"          # or "debug"
-GODOT_CPP_TARGET = "release"       # or "debug"
-GODOT_VERSION = "3.5"              # or "3.4"
+GODOT_CPP_TARGET = "template_release"       # or "debug"
+GODOT_VERSION = "4.0"              # or "3.4"
 CMAKE_MIN_VERSION = "3.19"         # Minimun CMake version needed for compiling CEF
 
 PWD = os.getcwd()
@@ -53,6 +53,7 @@ GDCEF_THIRDPARTY_PATH = os.path.join(PWD, "thirdparty")
 THIRDPARTY_CEF_PATH = os.path.join(GDCEF_THIRDPARTY_PATH, "cef_binary")
 THIRDPARTY_GODOT_PATH = os.path.join(GDCEF_THIRDPARTY_PATH, "godot-" + GODOT_VERSION)
 GODOT_CPP_API_PATH = os.path.join(THIRDPARTY_GODOT_PATH, "cpp")
+GODOT_CPP_API_FILE = os.path.join(GODOT_CPP_API_PATH, "gdextension/extension_api.json")
 PATCHES_PATH = os.path.join(PWD, "patches")
 GDCEF_EXAMPLES_PATH = os.path.join(PWD, "demos")
 # If you modify CEF_ARTIFACTS_BUILD_PATH, do not forget to also change Godot
@@ -380,6 +381,7 @@ def gdnative_scons_cmd(plateform):
              "arch=" + ARCHI, "platform=" + plateform], check=True)
     else:
         run(["scons", "api_path=" + GODOT_CPP_API_PATH,
+             "custom_api_file=" + GODOT_CPP_API_FILE,
              "cef_artifacts_folder=\\\"" + CEF_ARTIFACTS_FOLDER + "\\\"",
              "build_path=" + CEF_ARTIFACTS_BUILD_PATH,
              "target=" + MODULE_TARGET, "--jobs=" + NPROC,

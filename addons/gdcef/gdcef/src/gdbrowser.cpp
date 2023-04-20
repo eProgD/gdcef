@@ -27,47 +27,53 @@
 #include "gdbrowser.hpp"
 #include "helper_files.hpp"
 
+using namespace godot;
+
 //------------------------------------------------------------------------------
 // in a GDNative module, "_bind_methods" is replaced by the "_register_methods"
 // method CefRefPtr<CefBrowser> m_browser;this is used to expose various methods of this class to Godot
-void GDBrowserView::_register_methods()
+void GDBrowserView::_bind_methods()
 {
     GDCEF_DEBUG();
 
-    godot::register_method("close", &GDBrowserView::close);
-    godot::register_method("id", &GDBrowserView::id);
-    godot::register_method("get_error", &GDBrowserView::getError);
-    godot::register_method("is_valid", &GDBrowserView::isValid);
-    godot::register_method("get_texture", &GDBrowserView::texture);
-    godot::register_method("set_zoom_level", &GDBrowserView::setZoomLevel);
-    godot::register_method("load_url", &GDBrowserView::loadURL);
-    godot::register_method("is_loaded", &GDBrowserView::loaded);
-    godot::register_method("get_url", &GDBrowserView::getURL);
-    godot::register_method("stop_loading", &GDBrowserView::stopLoading);
-    godot::register_method("execute_javascript", &GDBrowserView::executeJavaScript);
-    godot::register_method("has_previous_page", &GDBrowserView::canNavigateBackward);
-    godot::register_method("has_next_page", &GDBrowserView::canNavigateForward);
-    godot::register_method("previous_page", &GDBrowserView::navigateBackward);
-    godot::register_method("next_page", &GDBrowserView::navigateForward);
-    godot::register_method("resize", &GDBrowserView::reshape);
-    godot::register_method("set_viewport", &GDBrowserView::viewport);
-    godot::register_method("on_key_pressed", &GDBrowserView::keyPress);
-    godot::register_method("on_mouse_moved", &GDBrowserView::mouseMove);
-    godot::register_method("on_mouse_left_click", &GDBrowserView::leftClick);
-    godot::register_method("on_mouse_right_click", &GDBrowserView::rightClick);
-    godot::register_method("on_mouse_middle_click", &GDBrowserView::middleClick);
-    godot::register_method("on_mouse_left_down", &GDBrowserView::leftMouseDown);
-    godot::register_method("on_mouse_left_up", &GDBrowserView::leftMouseUp);
-    godot::register_method("on_mouse_right_down", &GDBrowserView::rightMouseDown);
-    godot::register_method("on_mouse_right_up", &GDBrowserView::rightMouseUp);
-    godot::register_method("on_mouse_middle_down", &GDBrowserView::middleMouseDown);
-    godot::register_method("on_mouse_middle_up", &GDBrowserView::middleMouseUp);
-    godot::register_method("on_mouse_wheel_vertical", &GDBrowserView::mouseWheelVertical);
-    godot::register_method("on_mouse_wheel_horizontal", &GDBrowserView::mouseWheelHorizontal);
-    godot::register_method("set_muted", &GDBrowserView::mute);
-    godot::register_method("is_muted", &GDBrowserView::muted);
-
-    godot::register_signal<GDBrowserView>("page_loaded", "node", GODOT_VARIANT_TYPE_OBJECT);
+    ClassDB::bind_method(D_METHOD("close"), &GDBrowserView::close);
+    ClassDB::bind_method(D_METHOD("id"), &GDBrowserView::id);
+    ClassDB::bind_method(D_METHOD("get_error"), &GDBrowserView::getError);
+    ClassDB::bind_method(D_METHOD("is_valid"), &GDBrowserView::isValid);
+    ClassDB::bind_method(D_METHOD("get_texture"), &GDBrowserView::texture);
+    ClassDB::bind_method(D_METHOD("set_zoom_level"), &GDBrowserView::setZoomLevel);
+    ClassDB::bind_method(D_METHOD("load_url"), &GDBrowserView::loadURL);
+    ClassDB::bind_method(D_METHOD("is_loaded"), &GDBrowserView::loaded);
+    ClassDB::bind_method(D_METHOD("get_url"), &GDBrowserView::getURL);
+    ClassDB::bind_method(D_METHOD("stop_loading"), &GDBrowserView::stopLoading);
+    ClassDB::bind_method(D_METHOD("execute_javascript"), &GDBrowserView::executeJavaScript);
+    ClassDB::bind_method(D_METHOD("has_previous_page"), &GDBrowserView::canNavigateBackward);
+    ClassDB::bind_method(D_METHOD("has_next_page"), &GDBrowserView::canNavigateForward);
+    ClassDB::bind_method(D_METHOD("previous_page"), &GDBrowserView::navigateBackward);
+    ClassDB::bind_method(D_METHOD("next_page"), &GDBrowserView::navigateForward);
+    ClassDB::bind_method(D_METHOD("resize"), &GDBrowserView::reshape);
+    ClassDB::bind_method(D_METHOD("set_viewport"), &GDBrowserView::viewport);
+    ClassDB::bind_method(D_METHOD("on_key_pressed"), &GDBrowserView::keyPress);
+    ClassDB::bind_method(D_METHOD("on_mouse_moved"), &GDBrowserView::mouseMove);
+    ClassDB::bind_method(D_METHOD("on_mouse_left_click"), &GDBrowserView::leftClick);
+    ClassDB::bind_method(D_METHOD("on_mouse_right_click"), &GDBrowserView::rightClick);
+    ClassDB::bind_method(D_METHOD("on_mouse_middle_click"), &GDBrowserView::middleClick);
+    ClassDB::bind_method(D_METHOD("on_mouse_left_down"), &GDBrowserView::leftMouseDown);
+    ClassDB::bind_method(D_METHOD("on_mouse_left_up"), &GDBrowserView::leftMouseUp);
+    ClassDB::bind_method(D_METHOD("on_mouse_right_down"), &GDBrowserView::rightMouseDown);
+    ClassDB::bind_method(D_METHOD("on_mouse_right_up"), &GDBrowserView::rightMouseUp);
+    ClassDB::bind_method(D_METHOD("on_mouse_middle_down"), &GDBrowserView::middleMouseDown);
+    ClassDB::bind_method(D_METHOD("on_mouse_middle_up"), &GDBrowserView::middleMouseUp);
+    ClassDB::bind_method(D_METHOD("on_mouse_wheel_vertical"), &GDBrowserView::mouseWheelVertical);
+    ClassDB::bind_method(D_METHOD("on_mouse_wheel_horizontal"), &GDBrowserView::mouseWheelHorizontal);
+    ClassDB::bind_method(D_METHOD("set_muted"), &GDBrowserView::mute);
+    ClassDB::bind_method(D_METHOD("is_muted"), &GDBrowserView::muted);
+   // ClassDB::bind_method(D_METHOD("page_loaded"), &GDBrowserView::pageLoaded);
+    ADD_GROUP("Test group", "group_");
+	ADD_SUBGROUP("Test subgroup", "group_subgroup_");
+    ADD_SIGNAL(MethodInfo("page_loaded", PropertyInfo(Variant::OBJECT, "node")));
+    ADD_SIGNAL(MethodInfo("on_browser_paint", PropertyInfo(Variant::OBJECT, "node")));
+   // godot::register_signal<GDBrowserView>("page_loaded", "node", GODOT_VARIANT_TYPE_OBJECT);
 }
 
 //------------------------------------------------------------------------------
@@ -109,7 +115,6 @@ int GDBrowserView::init(godot::String const& url, CefBrowserSettings const& sett
 
         m_id = m_browser->GetIdentifier();
         BROWSER_DEBUG_VAL("CreateBrowserSync #" << m_id << " "
-                          << get_name().utf8().get_data()
                           << " succeeded");
         m_browser->GetHost()->WasResized();
     }
@@ -124,8 +129,8 @@ GDBrowserView::GDBrowserView()
     BROWSER_DEBUG_VAL("Create Godot texture");
 
     m_impl = new GDBrowserView::Impl(*this);
-    m_image.instance();
-    m_texture.instance();
+    m_image.instantiate();
+    m_texture.instantiate();
 }
 
 //------------------------------------------------------------------------------
@@ -161,19 +166,28 @@ void GDBrowserView::onPaint(CefRefPtr<CefBrowser> /*browser*/,
 
     // Copy CEF image buffer to Godot PoolByteArray
     m_data.resize(TEXTURE_SIZE);
-    godot::PoolByteArray::Write w = m_data.write();
-    memcpy(&w[0], buffer, size_t(TEXTURE_SIZE));
+  //  std::copy((const char*)buffer, (const char*)buffer + TEXTURE_SIZE, std::back_inserter(m_data));
+  //  godot::PackedByteArray::Write w = m_data.write();
+   // memcpy(&w[0], buffer, size_t(TEXTURE_SIZE));
 
     // Color conversion BGRA8 -> RGBA8: swap B and R chanels
-    for (int i = 0; i < TEXTURE_SIZE; i += COLOR_CHANELS)
-    {
-        std::swap(w[i], w[i + 2]);
-    }
+    const unsigned char* cbuffer = (const unsigned char*)buffer;
 
+    for (int i = 0; i < TEXTURE_SIZE; i += COLOR_CHANELS)
+    {    
+        m_data[i] = cbuffer[i + 2];
+        m_data[i + 1] = cbuffer[i + 1];
+        m_data[i + 2] = cbuffer[i];
+        m_data[i + 3] = cbuffer[i + 3];
+        //std::swap(m_data[i], m_data[i + 2]);
+    }
+    GDCEF_DEBUG_VAL("OnPaint " << m_data.size());
     // Copy Godot PoolByteArray to Godot texture.
-    m_image->create_from_data(width, height, false, godot::Image::FORMAT_RGBA8,
+    m_image = m_image->create_from_data(width, height, false, godot::Image::FORMAT_RGBA8,
                               m_data);
-    m_texture->create_from_image(m_image, godot::Texture::FLAG_VIDEO_SURFACE);
+    GDCEF_DEBUG_VAL("m_image " << m_image->get_width() << m_image->get_height());
+    m_texture = m_texture->create_from_image(m_image);
+    emit_signal("on_browser_paint", this);
 }
 
 //------------------------------------------------------------------------------
@@ -372,7 +386,7 @@ void GDBrowserView::close()
         return ;
 
     // FIXME
-    BROWSER_DEBUG_VAL("'" << get_name().utf8().get_data() << "'");
+   // BROWSER_DEBUG_VAL("'" << get_name().to_utf8_buffer().get_data() << "'");
 
     auto host = m_browser->GetHost();
     if (!host)
